@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { TDSLoader } from 'three/examples/jsm/loaders/TDSLoader.js';
 
 // ページの読み込みを待つ
@@ -27,7 +27,7 @@ function init() {
   camera.position.set(150, 150, 5);
 
   // カメラコントローラーを作成
-  const controls = new THREE.OrbitControls(camera, canvasElement);
+  const controls = new OrbitControls(camera, canvasElement);
 
   // 平行光源を作成
   const directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -38,7 +38,7 @@ function init() {
   scene.add(ambientLight);
 
   // 3DS形式のモデルデータを読み込む
-  const loader = new THREE.TDSLoader();
+  const loader = new TDSLoader();
   // テクスチャーのパスを指定
   loader.setResourcePath('models/3ds/portalgun/textures/');
   // 3dsファイルのパスを指定
