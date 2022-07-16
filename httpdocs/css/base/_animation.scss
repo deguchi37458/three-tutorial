@@ -1,0 +1,22 @@
+
+@keyframes circle {
+  0% { 
+    stroke-dasharray: 0 377; 
+  }
+  28% {
+    stroke-dasharray: 0 377; 
+  }
+  100% {
+    stroke-dasharray: 377 377; 
+  }
+}
+
+@keyframes ripple{
+  0%{
+    transform: scale(1.0);
+  }
+  100%{
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+body{
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", sans-serif;
+  overflow: hidden;
+}
+p {
+  line-height: 2.0;
+}
+img {
+  width: 100%;
+}
+
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  @include tab {
+    padding: 0 25px;
+  }
+}
