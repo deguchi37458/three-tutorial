@@ -13,6 +13,7 @@ function init() {
   // レンダラーを作成
   const canvasElement = document.querySelector('#myCanvas');
   const renderer = new THREE.WebGLRenderer({
+    alpha: true,
     canvas: canvasElement,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
