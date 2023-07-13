@@ -29,6 +29,7 @@ const uniforms = {
   uTexture: { value: texture },
   uImageAspect: { value: 1920 / 1280 }, // 画像のアスペクト
   uPlaneAspect: { value: 800 / 500 }, // プレーンのアスペクト
+  uTime: { value: 0 }, // 時間経過
 };
 const geo = new THREE.PlaneBufferGeometry(800, 500, 100, 100);
 const mat = new THREE.ShaderMaterial({
@@ -43,6 +44,7 @@ scene.add(mesh);
 
 // 毎フレーム呼び出す
 const loop = () => {
+  uniforms.uTime.value++;
   renderer.render(scene, camera);
 
   requestAnimationFrame(loop);
