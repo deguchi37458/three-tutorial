@@ -4,12 +4,14 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "https://unpkg.com/three@0.152.2/build/three.module.js"
+          "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.152.2/examples/jsm/"
         }
       }
     </script>
     <script type="module">
       import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
       // サイズを指定
       const width = 960;
@@ -17,8 +19,9 @@
       let rot = 0;
 
       // レンダラーを作成
+      const canvasElement = document.querySelector("#myCanvas")
       const renderer = new THREE.WebGLRenderer({
-        canvas: document.querySelector("#myCanvas"),
+        canvas: canvasElement,
       });
       renderer.setSize(width, height);
 
@@ -26,7 +29,16 @@
       const scene = new THREE.Scene();
 
       // カメラを作成
-      const camera = new THREE.PerspectiveCamera(45, width / height);
+      const camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+      camera.position.set(0, 0, 1000);
+
+
+      // カメラコントローラ
+      const controls = new OrbitControls(camera, canvasElement)
+      
+      // 滑らかにカメラコントローラーを制御する
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.2;
 
       // 平行光源を作成
       const directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -80,14 +92,9 @@
 
       // 毎フレーム時に実行されるループイベントです
       function tick() {
-        rot += 0.5; // 毎フレーム角度を0.5度ずつ足していく
-        // ラジアンに変換する
-        const radian = (rot * Math.PI) / 180;
-        // 角度に応じてカメラの位置を設定
-        camera.position.x = 1000 * Math.sin(radian);
-        camera.position.z = 1000 * Math.cos(radian);
-        // 原点方向を見つめる
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        earthMesh.rotation.y += 0.005;
+        
+        controls.update();
 
         // レンダリング
         renderer.render(scene, camera);
