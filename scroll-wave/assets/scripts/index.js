@@ -99,6 +99,13 @@ const main = () => {
     }
     loop();
   });
+
+  // リサイズ（負荷軽減のためリサイズが完了してから発火する）
+  window.addEventListener('resize', () => {
+    if (timeoutId) clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(resize, 200);
+  });
 };
 
 main();
@@ -120,4 +127,27 @@ const updateScroll = () => {
   currentScrollY = lerp(currentScrollY, targetScrollY, 0.1);
 
   scrollOffset = targetScrollY - currentScrollY;
+};
+
+// リサイズ処理
+let timeoutId = 0;
+const resize = () => {
+  // three.jsのリサイズ
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  
+  canvasSize.w = width;
+  canvasSize.h = height;
+
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(width, height);
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  
+  // カメラの距離を計算し直す
+  const fov = 60;
+  const fovRad = (fov / 2) * (Math.PI / 180);
+  const dist = canvasSize.h / 2 / Math.tan(fovRad);
+  camera.position.z = dist;
 };
