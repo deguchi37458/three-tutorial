@@ -29,17 +29,26 @@
       const camera = new THREE.PerspectiveCamera(45, width / height);
       camera.position.set(0, 0, +1000);
 
-      // 箱を作成
-      const geometry = new THREE.BoxGeometry(400, 400, 400);
-      const material = new THREE.MeshNormalMaterial();
-      const box = new THREE.Mesh(geometry, material);
-      scene.add(box);
+      // 球体を作成
+      const geometry = new THREE.SphereGeometry(300, 30, 30);
+      const loader = new THREE.TextureLoader();
+      const texture = loader.load('assets/imgs/earthmap1k.jpg');
+      const material = new THREE.MeshStandardMaterial(
+        {map: texture}
+      );
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      // 並行光源
+      const directionalLight = new THREE.DirectionalLight(0xFFFFFF);
+      directionalLight.position.set(1, 1, 1);
+      scene.add(directionalLight);
 
       tick();
 
       // 毎フレーム時に実行されるループイベントです
       function tick() {
-        box.rotation.y += 0.01;
+        mesh.rotation.y += 0.01;
         renderer.render(scene, camera); // レンダリング
 
         requestAnimationFrame(tick);
