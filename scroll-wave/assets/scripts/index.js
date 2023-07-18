@@ -43,10 +43,10 @@ class ImagePlane {
     this.mesh.position.set(x, y, this.mesh.position.z);
   }
 
-  update() {
+  update(offset) {
     this.setParams();
 
-    this.mesh.material.uniforms.uTime.value++;
+    this.mesh.material.uniforms.uTime.value = offset; // offetを受け取り代入する
   }
 }
 
@@ -76,8 +76,9 @@ const imagePlaneArray = [];
 
 // 毎フレーム呼び出す
 const loop = () => {
+  updateScroll();
   for (const plane of imagePlaneArray) {
-    plane.update();
+    plane.update(scrollOffset);
   }
   renderer.render(scene, camera);
 
@@ -101,3 +102,22 @@ const main = () => {
 };
 
 main();
+
+// スクロール追従
+let targetScrollY = 0; // 本来のスクロール位置
+let currentScrollY = 0; // 線形補間を適用した現在のスクロール位置
+let scrollOffset = 0; // 上記2つの差分
+
+// 開始と終了をなめらかに補間する関数
+const lerp = (start, end, multiplier) => {
+  return (1 - multiplier) * start + multiplier * end;
+};
+
+const updateScroll = () => {
+  // スクロール位置を取得
+  targetScrollY = document.documentElement.scrollTop;
+  // リープ関数でスクロール位置をなめらかに追従
+  currentScrollY = lerp(currentScrollY, targetScrollY, 0.1);
+
+  scrollOffset = targetScrollY - currentScrollY;
+};
