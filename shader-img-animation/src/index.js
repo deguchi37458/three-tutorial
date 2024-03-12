@@ -93,6 +93,9 @@ scene.add(camera);
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+controls.enableZoom = false; // ズームを無効化
+controls.enablePan = false; // ドラッグ移動を無効化
+controls.enableRotate = false; // 回転を無効化
 
 /**
  * Renderer
