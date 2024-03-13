@@ -38,6 +38,7 @@ const material = new THREE.ShaderMaterial({
   transparent: true,
   uniforms: {
     uTexture: {
+      type: 't',
       value: textureLoader.load(img)
     },
     uProgress: {
@@ -48,7 +49,11 @@ const material = new THREE.ShaderMaterial({
     },
     uAnimation: {
       value: 0
-    }
+    },
+    curlR: {
+      type: 'f',
+      value: 1.0
+    },   
   }
 })
 

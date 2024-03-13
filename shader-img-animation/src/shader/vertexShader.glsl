@@ -1,7 +1,15 @@
-
 varying vec2 vUv;
-
-void main() {
+uniform float curlR;
+void main()
+{
   vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.);
+
+  float theta = position.x / curlR;
+  float tx = curlR * sin(theta);
+  float ty = position.y;
+  float tz = curlR * (1.0 - cos(theta));
+  vec3 p = vec3(tx, ty, tz);
+
+  vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mvPosition;
 }
