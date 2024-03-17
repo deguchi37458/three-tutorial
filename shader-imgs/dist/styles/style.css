@@ -24,7 +24,7 @@ img {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  /* z-index: -1; */
 }
 
 .webgl-canvas__body {
@@ -58,14 +58,6 @@ img {
   margin: 0 auto;
 }
 
-.webgl-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-}
 
 .webgl-canvas__body {
   width: 100%;
@@ -103,14 +95,6 @@ img {
   margin: 0 auto;
 }
 
-.webgl-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-}
 
 .webgl-canvas__body {
   width: 100%;

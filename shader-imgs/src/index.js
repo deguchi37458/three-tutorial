@@ -43,8 +43,8 @@ camera.position.z = dist;
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enableZoom = false; // ズームを無効化
-controls.enablePan = false; // ドラッグ移動を無効化
-controls.enableRotate = false; // 回転を無効化
+// controls.enablePan = false; // ドラッグ移動を無効化
+// controls.enableRotate = false; // 回転を無効化
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -94,10 +94,10 @@ const createMesh = (img) => {
       },
       curlR: {
         type: 'f',
-        value: 2
+        value: 0.3
       },
-      uImageAspect: { value: img.naturalWidth / img.naturalHeight },
-      uPlaneAspect: { value: img.clientWidth / img.clientHeight },
+      // uImageAspect: { value: img.naturalWidth / img.naturalHeight },
+      // uPlaneAspect: { value: img.clientWidth / img.clientHeight },
       uTime: { value: 0 },
     }
   })
