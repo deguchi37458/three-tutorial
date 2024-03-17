@@ -28,16 +28,14 @@ const scene = new THREE.Scene();
 const textureLoader = new THREE.TextureLoader();
 
 // Camera
-const fov = 60; // 視野角
-const fovRad = (fov / 2) * (Math.PI / 180);
-const dist = sizes.height / 2 / Math.tan(fovRad);
 const camera = new THREE.PerspectiveCamera(
-  fov,
+  75,
   sizes.width / sizes.height,
   0.1,
-  1000
+  100
 );
-camera.position.z = dist;
+camera.position.set(0, 0, 1);
+scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
@@ -67,13 +65,13 @@ class ImagePlane {
     this.mesh.scale.x = rect.width;
     this.mesh.scale.y = rect.height;
 
-    const x = rect.left - sizes.width / 2 + rect.width / 2;
-    const y = -rect.top + sizes.height / 2 - rect.height / 2;
-    this.mesh.position.set(x, y, this.mesh.position.z);
+    // const x = rect.left - sizes.width / 2 + rect.width / 2;
+    // const y = -rect.top + sizes.height / 2 - rect.height / 2;
+    // this.mesh.position.set(x, y, this.mesh.position.z);
   }
 
   update(offset) {
-    this.setParams();
+    // this.setParams();
 
     this.mesh.material.uniforms.uTime.value = offset; // offetを受け取り代入する
   }
@@ -94,7 +92,7 @@ const createMesh = (img) => {
       },
       curlR: {
         type: 'f',
-        value: 0.3
+        value: 1
       },
       // uImageAspect: { value: img.naturalWidth / img.naturalHeight },
       // uPlaneAspect: { value: img.clientWidth / img.clientHeight },
@@ -141,7 +139,7 @@ const loop = () => {
 };
 
 const animate = () => {
-  window.addEventListener('load', () => {
+  // window.addEventListener('load', () => {
     const imageArray = [...document.querySelectorAll('img')];
     for (const img of imageArray) {
       console.log(img);
@@ -149,13 +147,17 @@ const animate = () => {
       const mesh = createMesh(img);
       scene.add(mesh);
 
-      const imagePlane = new ImagePlane(mesh, img);
-      imagePlane.setParams();
+      // const imagePlane = new ImagePlane(mesh, img);
+      // imagePlane.setParams();
 
-      imagePlaneArray.push(imagePlane);
+      // imagePlaneArray.push(imagePlane);
     }
-    loop();
-  });
+    // loop();
+
+      renderer.render(scene, camera);
+
+      requestAnimationFrame(loop);
+  // });
 };
 
 animate();

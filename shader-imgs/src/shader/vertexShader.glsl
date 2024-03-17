@@ -4,9 +4,9 @@ void main()
 {
   vUv = uv;
 
-  float theta = position.x / curlR;
-  float tx = curlR * sin(theta);
-  float ty = position.y;
+  float theta = position.y / curlR;
+  float tx = position.x;
+  float ty = curlR * sin(theta);
   float tz = curlR * (1.0 - cos(theta));
   vec3 p = vec3(tx, ty, tz);
 
