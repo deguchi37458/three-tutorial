@@ -29,7 +29,7 @@ scene.background = new THREE.Color( 0xffffff );
 const textureLoader = new THREE.TextureLoader();
 // const texture = textureLoader.load(img.src);
 
-const geometry = new THREE.CylinderGeometry( 5, 5, 3, 16, 16, true); 
+const geometry = new THREE.CylinderGeometry( 5, 5, 3, 10, 10, true); 
 const material = new THREE.ShaderMaterial({
   vertexShader: vertexShader,
   fragmentShader: fragmentShader,
@@ -37,7 +37,14 @@ const material = new THREE.ShaderMaterial({
   uniforms: {
     uTexture1: { value: textureLoader.load(img) },
     uTexture2: { value: textureLoader.load(img) },
-    uTexture3: { value: textureLoader.load(img) }
+    uTexture3: { value: textureLoader.load(img) },
+    uTexture4: { value: textureLoader.load(img) },
+    uTexture5: { value: textureLoader.load(img) },
+    uTexture6: { value: textureLoader.load(img) },
+    uTexture7: { value: textureLoader.load(img) },
+    uTexture8: { value: textureLoader.load(img) },
+    uTexture9: { value: textureLoader.load(img) },
+    uTexture10: { value: textureLoader.load(img) }
   }
 }); 
 const cylinder = new THREE.Mesh( geometry, material ); 
@@ -65,7 +72,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(0, 0, 1);
+camera.position.set(0, 0, 0);
 scene.add(camera);
 
 // Controls
