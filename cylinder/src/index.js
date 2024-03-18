@@ -29,7 +29,7 @@ scene.background = new THREE.Color( 0xffffff );
 const textureLoader = new THREE.TextureLoader();
 // const texture = textureLoader.load(img.src);
 
-const geometry = new THREE.CylinderGeometry( 5, 5, 3, 10, 10, true); 
+const geometry = new THREE.CylinderGeometry( 5, 5, 3, 100, 100, true); 
 const material = new THREE.ShaderMaterial({
   vertexShader: vertexShader,
   fragmentShader: fragmentShader,
@@ -88,13 +88,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-/**
- * Animate
- */
-const clock = new THREE.Clock();
-
 const animate = () => {
-  const elapsedTime = clock.getElapsedTime();
+  cylinder.rotation.y += 0.0025
 
   // Update controls
   controls.update();
