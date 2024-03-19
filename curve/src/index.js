@@ -66,6 +66,20 @@ gsap.to(material.uniforms.progress, {
   delay: 1
 })
 
+const tl = gsap.timeline()
+tl.to(material.uniforms.progress, {
+  value: 1,
+  duration: 1,
+  delay: 1,
+  ease: 'circ.inOut'
+})
+.to('.text span', {
+  y: '0%',
+  duration: 0.9,
+  stagger: 0.05,
+  ease: 'circ.inOut'
+}, '-=0.4')
+
 // Renderer
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
