@@ -1,19 +1,15 @@
 varying vec2 vUv;
 
-uniform sampler2D uTexture;
-uniform float uProgress;
-uniform float uTime;
-uniform float uAnimation;
+uniform sampler2D uTexture1;
+uniform sampler2D uTexture2;
 
 void main() {
-
-//   vec4 color = texture2D(uTexture,vec2(vUv.x,abs(sin(uTime * 0.1))));
-
-  vec4 color1 = texture2D(uTexture,vUv);
-  vec4 color2 = texture2D(uTexture,vec2(uAnimation,vUv.y));
-  vec4 final = mix(color2,color1,step(vUv.x,uAnimation));
-
-//   gl_FragColor = vec4(vUv,uProgress,1.);
-//   gl_FragColor = color;
-  gl_FragColor = final;
+  vec2 uv = vUv;
+  if (uv.y < 0.333) {
+    gl_FragColor = texture2D(uTexture1, vec2(uv.x, uv.y * 3.0));
+  } else if (uv.y < 0.666) {
+    gl_FragColor = texture2D(uTexture2, vec2(uv.x, ((uv.y - 0.333 )* 3.0 )));
+  } else {
+    gl_FragColor = texture2D(uTexture2, vec2(uv.x, ((uv.y - 0.666 )* 3.0 )));
+  }
 }
