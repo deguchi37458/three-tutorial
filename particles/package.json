@@ -26,6 +26,7 @@
   "dependencies": {
     "file-loader": "^6.2.0",
     "gsap": "^3.12.5",
+    "lil-gui": "^0.19.2",
     "three": "^0.137.5"
   }
 }
