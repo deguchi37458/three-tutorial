@@ -10,3 +10,7 @@ yarn dev
 `src/index.js`が`dist/bundle.js`に出力
 
 `index.html`は`dist`に記述
+
+
+参考
+https://liginc.co.jp/553484

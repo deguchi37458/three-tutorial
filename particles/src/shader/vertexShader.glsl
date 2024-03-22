@@ -1,15 +1,22 @@
-varying vec2 vUv;
-uniform float curlR;
-void main()
-{
-  vUv = uv;
+attribute vec3 position;
+attribute vec3 secondPosition;
+attribute vec3 thirdPosition;
+attribute vec3 fourthPosition;
+attribute vec3 fifthPosition;
+uniform float uSec1;
+uniform float uSec2;
+uniform float uSec3;
+uniform float uSec4;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
 
-  float theta = position.y / curlR;
-  float tx = position.x;
-  float ty = curlR * sin(theta);
-  float tz = curlR * (1.0 - cos(theta));
-  vec3 p = vec3(tx, ty, tz);
+void main() {
+ vec3 toTorus = mix(position, secondPosition, uSec1);
+ vec3 toTorusKnot = mix(toTorus, thirdPosition, uSec2);
+ vec3 toCylinder = mix(toTorusKnot, fourthPosition, uSec3);
+ vec3 finalPos = mix(toCylinder, fifthPosition, uSec4);
 
-  vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
-  gl_Position = projectionMatrix * mvPosition;
+ gl_Position = projectionMatrix * modelViewMatrix * vec4(finalPos, 1.0 );
+ gl_PointSize = 3.0;
 }
+

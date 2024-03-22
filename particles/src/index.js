@@ -2,7 +2,10 @@ import vertexShader from "./shader/vertexShader";
 import fragmentShader from "./shader/fragmentShader";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler';
 import gsap from 'gsap'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 import * as dat from "lil-gui";
 
 // デバッグ(色つけるときに追加)
@@ -31,7 +34,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = dist;
+camera.position.z = (0, 0,5);
 scene.add(camera);
 
 //Renderer
@@ -41,58 +44,136 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// Donuts
+// 
+const getGeometryPosition = (geometry) => {
+  const particlesNum = 10000;
+  const material = new THREE.MeshBasicMaterial();
+  const mesh = new THREE.Mesh(geometry, material);
+  const sampler = new MeshSurfaceSampler(mesh).build();
+  const particlesPosition = new Float32Array(particlesNum * 3);
 
-const createGeometry = () => {
-  const size = 150;
-  const segments = 32;
-  const geometry = new THREE.BoxGeometry(
-    size,
-    size,
-    size,
-    segments,
-    segments,
-    segments
-  );
-  
-  geometry.morphAttributes.position = [];
-  
-  const positionAttribute = geometry.attributes.position;
+  for (let i =0; i < particlesNum; i++) {
+    const newPosition = new THREE.Vector3();
+    const normal = new THREE.Vector3();
 
-  console.log(geometry);
-  
-  const spherePositions = [];
-
-  
-  for (let i = 0; i < positionAttribute.count; i++) {
-    // 立方体の頂点座標を取得
-    const x = positionAttribute.getX(i);
-    const y = positionAttribute.getY(i);
-    const z = positionAttribute.getZ(i);
-  
-    // 頂点ベクトルを正規化（長さを同じに）して、球形の頂点にする
-    const vertex = new THREE.Vector3(x, y, z);
-    const spheredVertex = vertex.normalize().multiplyScalar(size);
-  
-    spherePositions.push(spheredVertex.x, spheredVertex.y, spheredVertex.z);
+    sampler.sample(newPosition, normal);
+    particlesPosition.set([newPosition.x, newPosition.y, newPosition.z], i * 3);
   }
-  
-  geometry.morphAttributes.position[0] = new THREE.Float32BufferAttribute(
-    spherePositions,
-    3
-  );
 
-  return geometry;
+  console.log(particlesPosition);
+  return particlesPosition
 }
 
-const geometry = createGeometry();
-const material = new THREE.PointsMaterial({
-  size: 0.023,
-  color: 'FFF'
-});
-const mesh = new THREE.Points(geometry, material);
+const setMesh = () => {
+  const geometry = new THREE.BufferGeometry();
+  
+  const firstPos = getGeometryPosition(new THREE.SphereBufferGeometry(1, 32, 32).toNonIndexed());
+  const secondPos = getGeometryPosition(new THREE.TorusBufferGeometry(0.7, 0.3, 32, 32).toNonIndexed());
+  const thirdPos = getGeometryPosition(new THREE.TorusKnotBufferGeometry(0.6, 0.25, 300, 20, 6, 10).toNonIndexed());
+  const fourthPos = getGeometryPosition(new THREE.CylinderBufferGeometry(1, 1, 1, 32, 32).toNonIndexed());
+  const fifthPos = getGeometryPosition(new THREE.IcosahedronGeometry(1.1, 0).toNonIndexed());
 
-scene.add(mesh)
+  const material = new THREE.RawShaderMaterial({
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader,
+    uniforms: {
+      uSec1: {
+        type: "f",
+        value: 0.0
+      },
+      uSec2: {
+        type: "f",
+        value: 0.0
+      },
+      uSec3: {
+        type: "f",
+        value: 0.0
+      },
+      uSec4: {
+        type: "f",
+        value: 0.0
+      },
+    },
+    transparent: true,
+    blending: THREE.AdditiveBlending
+  })
+
+  geometry.setAttribute("position", new THREE.BufferAttribute(firstPos, 3));
+  geometry.setAttribute("secondPosition", new THREE.BufferAttribute(secondPos, 3));
+  geometry.setAttribute("thirdPosition", new THREE.BufferAttribute(thirdPos, 3));
+  geometry.setAttribute("fourthPosition", new THREE.BufferAttribute(fourthPos, 3));
+  geometry.setAttribute("fifthPosition", new THREE.BufferAttribute(fifthPos, 3));
+
+  console.log(geometry)
+
+  const mesh =  new THREE.Points(geometry, material);
+
+  let group = new THREE.Group();
+  group.add(mesh)
+
+  setScroll(mesh)
+  scene.add(group)
+}
+
+const setScroll = (mesh) => {
+  gsap.timeline({
+    defaults: {},
+    scrollTrigger: {
+      trigger: "body",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 0.7
+    }
+  })
+  .to(mesh.rotation, {
+    x: Math.PI * 2,
+    y: Math.PI * 2,
+    z: Math.PI * 2
+  });
+
+  gsap.to(mesh.material.uniforms.uSec1, {
+    value: 1.0,
+    scrollTrigger: {
+      trigger: "._01",
+      start: "bottom bottom",
+      end: "bottom top",
+      scrub: 0.7,
+      markers: true
+    }
+  });
+  gsap.to(mesh.material.uniforms.uSec2, {
+    value: 1.0,
+    scrollTrigger: {
+      trigger: "._02",
+      start: "bottom bottom",
+      end: "bottom top",
+      scrub: 0.7,
+      markers: true
+    }
+  });
+  gsap.to(mesh.material.uniforms.uSec3, {
+    value: 1.0,
+    scrollTrigger: {
+      trigger: "._03",
+      start: "bottom bottom",
+      end: "bottom top",
+      scrub: 0.7,
+      markers: true
+    }
+  });
+  gsap.to(mesh.material.uniforms.uSec4, {
+    value: 1.0,
+    scrollTrigger: {
+      trigger: "._04",
+      start: "bottom bottom",
+      end: "bottom top",
+      scrub: 0.7,
+      markers: true
+    }
+  });
+}
+
+setMesh()
 
 // gui.addColor(donutsParticlesMaterial, 'color');
 
@@ -119,36 +200,15 @@ scene.add(mesh)
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
-
-// アニメーション
-// const clock = new THREE.Clock();
-
-const animationParam = {
-  value: 0,
-};
-
-gsap.to(animationParam, {
-  value: 1,
-  duration: 3,
-  ease: 'Power2.out',
-});
-
-const tick = () => {
-  // const elapsedTime = clock.getElapsedTime(); // 経過時間を取得
-  // camera.position.x = Math.cos(elapsedTime * 0.5) * 6;
-
-  // mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.01;
-
-  mesh.morphTargetInfluences[0] = animationParam.value;
+const animate = () => {
 
   controls.update();
   renderer.render(scene, camera);
 
-  window.requestAnimationFrame(tick);
+  window.requestAnimationFrame(animate);
 };
 
-tick();
+animate();
 
 //ブラウザのリサイズ操作
 window.addEventListener("resize", () => {
@@ -164,8 +224,8 @@ window.addEventListener("resize", () => {
 
 
 // helper 
-// const gridHelper = new THREE.GridHelper(300, 10);
-// scene.add(gridHelper);
+const gridHelper = new THREE.GridHelper(300, 10);
+scene.add(gridHelper);
 
 const axesHelper = new THREE.AxesHelper()
 scene.add(axesHelper)
