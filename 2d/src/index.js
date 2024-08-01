@@ -57,12 +57,8 @@ renderer.setPixelRatio(window.devicePixelRatio);
 const textureLoader = new THREE.TextureLoader();
 const textures = [
   textureLoader.load('images/product01.png'),
-  textureLoader.load('images/product02.png'),
-  textureLoader.load('images/product03.png'),
-  textureLoader.load('images/product04.png'),
-  textureLoader.load('images/product05.png'),
 ];
-const texture = textureLoader.load('images/product00.png');  // 画像のパスを指定
+const texture = textureLoader.load('images/product01.png');  // 画像のパスを指定
 
 // 画像を大量に表示させるためのグループを作成
 const group = new THREE.Group();
