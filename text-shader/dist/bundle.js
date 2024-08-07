@@ -91,7 +91,7 @@ eval("module.exports = \"    void main() {\\n      gl_FragColor = vec4(1.0, 1.0,
   \**************************************/
 /***/ ((module) => {
 
-eval("module.exports = \"uniform float uFrequency;\\nuniform float uTime;\\n\\nvoid main() {\\n  vec3 p = vec3(position.x, position.y, position.z);\\n\\n  // Oscillate vertices up/down\\n  p.y += (sin(p.x * uFrequency + uTime) * 0.5 ) * 10;\\n\\n  // Oscillate vertices inside/outside\\n  p.z += (sin(p.x * uFrequency + uTime) * 0.5 ) * 10;\\n\\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);\\n}\\n\"\n\n//# sourceURL=webpack://three-shader-env01/./src/shader/vertexShader.glsl?");
+eval("module.exports = \"uniform float uFrequency;\\nuniform float uTime;\\n\\nvoid main() {\\n  vec3 p = vec3(position.x, position.y, position.z);\\n\\n  // Oscillate vertices up/down\\n  p.y += (sin(p.x * uFrequency + uTime) * 0.5 ) * 10.0;\\n\\n  // Oscillate vertices inside/outside\\n  p.z += (sin(p.x * uFrequency + uTime) * 0.5 ) * 10.0;\\n\\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);\\n}\\n\"\n\n//# sourceURL=webpack://three-shader-env01/./src/shader/vertexShader.glsl?");
 
 /***/ }),
 
